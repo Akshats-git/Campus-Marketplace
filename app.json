@@ -1,25 +1,70 @@
 {
   "expo": {
-    "name": "Campus-Marketplace",
-    "slug": "Campus-Marketplace",
+    "name": "Campus Marketplace",
+    "slug": "campus-marketplace",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "scheme": "campusmarketplace",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A237E"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iitbhilai.campusmarketplace",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Take photos for your listings",
+        "NSPhotoLibraryUsageDescription": "Upload photos for your listings",
+        "NSLocationWhenInUseUsageDescription": "Show campus meetup locations"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#1A237E"
       },
-      "predictiveBackGestureEnabled": false
+      "package": "com.iitbhilai.campusmarketplace",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED",
+        "POST_NOTIFICATIONS"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
+      "bundler": "metro",
+      "output": "static",
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Campus Marketplace to access your photos for listings.",
+          "cameraPermission": "Allow Campus Marketplace to use your camera to take listing photos."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Campus Marketplace to show campus locations for meetups."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }

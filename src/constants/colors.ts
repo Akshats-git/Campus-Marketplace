@@ -1,0 +1,86 @@
+export const Colors = {
+  primary: '#3949AB',
+  primaryDark: '#1A237E',
+  primaryLight: '#7986CB',
+  secondary: '#00ACC1',
+  secondaryDark: '#00838F',
+  accent: '#FF6F00',
+  accentLight: '#FFB300',
+
+  background: '#F8F9FE',
+  surface: '#FFFFFF',
+  surfaceVariant: '#EEF0F8',
+  card: '#FFFFFF',
+
+  text: '#1C1B1F',
+  textSecondary: '#49454F',
+  textHint: '#938F99',
+  textOnPrimary: '#FFFFFF',
+
+  success: '#2E7D32',
+  successLight: '#E8F5E9',
+  warning: '#F57F17',
+  warningLight: '#FFF8E1',
+  error: '#C62828',
+  errorLight: '#FFEBEE',
+  info: '#0277BD',
+  infoLight: '#E1F5FE',
+
+  border: '#E8E8E8',
+  divider: '#F0F0F0',
+  shadow: 'rgba(0,0,0,0.08)',
+
+  // Category colors
+  electronics: '#1565C0',
+  electronicsLight: '#E3F2FD',
+  books: '#6A1B9A',
+  booksLight: '#F3E5F5',
+  cycles: '#2E7D32',
+  cyclesLight: '#E8F5E9',
+  sports: '#E65100',
+  sportsLight: '#FFF3E0',
+  furniture: '#4E342E',
+  furnitureLight: '#EFEBE9',
+  clothing: '#AD1457',
+  clothingLight: '#FCE4EC',
+  stationery: '#00695C',
+  stationeryLight: '#E0F2F1',
+  lab: '#37474F',
+  labLight: '#ECEFF1',
+  free: '#1B5E20',
+  freeLight: '#F1F8E9',
+  other: '#546E7A',
+  otherLight: '#ECEFF1',
+
+  // Dark mode
+  darkBackground: '#0F0F13',
+  darkSurface: '#1C1B1F',
+  darkSurfaceVariant: '#252429',
+  darkText: '#E6E1E5',
+  darkTextSecondary: '#CAC4D0',
+  darkBorder: '#2C2C30',
+};
+
+export const Shadows = {
+  small: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  medium: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.10,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  large: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.14,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+};
