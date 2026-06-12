@@ -13,7 +13,6 @@ import {
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { Image } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, Stack, router } from 'expo-router';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
@@ -32,7 +31,7 @@ import { useAuthStore } from '../../src/stores/authStore';
 import { useChatStore } from '../../src/stores/chatStore';
 import { Colors, Shadows } from '../../src/constants/colors';
 import { Message, Listing, User } from '../../src/types';
-import { formatRelativeTime, formatPrice } from '../../src/utils/formatters';
+import { formatPrice } from '../../src/utils/formatters';
 
 const { width } = Dimensions.get('window');
 
@@ -124,11 +123,6 @@ export default function ChatScreen() {
   function renderMessage({ item, index }: { item: Message; index: number }) {
     const isMe = item.senderId === userProfile?.uid;
     const showAvatar = !isMe && (index === 0 || messages[index - 1]?.senderId !== item.senderId);
-    const showTime =
-      index === messages.length - 1 ||
-      messages[index + 1]?.senderId !== item.senderId ||
-      messages[index + 1]?.createdAt - item.createdAt > 300000;
-
     return (
       <Animated.View entering={FadeIn.delay(30)} style={[styles.msgRow, isMe && styles.msgRowMe]}>
         {!isMe && (
@@ -147,7 +141,7 @@ export default function ChatScreen() {
 
         <View style={[styles.msgBubble, isMe ? styles.msgBubbleMe : styles.msgBubbleOther]}>
           {item.type === 'image' && item.imageUrl ? (
-            <Image source={{ uri: item.imageUrl }} style={styles.msgImage} contentFit="cover" borderRadius={12} />
+            <Image source={{ uri: item.imageUrl }} style={[styles.msgImage, { borderRadius: 12 }]} contentFit="cover" />
           ) : item.type === 'offer' ? (
             <View style={styles.offerBubble}>
               <MaterialCommunityIcons name="hand-coin" size={20} color={Colors.accent} />
