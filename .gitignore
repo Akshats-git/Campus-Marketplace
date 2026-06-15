@@ -30,8 +30,14 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
+# local env files — never commit real credentials
+.env
+.env.local
 .env*.local
+
+# Firebase — download from Firebase Console, never commit
+google-services.json
+GoogleService-Info.plist
 
 # typescript
 *.tsbuildinfo

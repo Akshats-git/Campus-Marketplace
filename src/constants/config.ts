@@ -10,15 +10,15 @@ export const SEARCH_DEBOUNCE_MS = 400;
 export const PAGE_SIZE = 20;
 
 export const FIREBASE_CONFIG = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT.appspot.com',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId: 'YOUR_APP_ID',
-  measurementId: 'YOUR_MEASUREMENT_ID',
+  apiKey:            process.env.EXPO_PUBLIC_FIREBASE_API_KEY ?? '',
+  authDomain:        process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN ?? '',
+  projectId:         process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID ?? '',
+  storageBucket:     process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET ?? '',
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? '',
+  appId:             process.env.EXPO_PUBLIC_FIREBASE_APP_ID ?? '',
+  measurementId:     process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID ?? '',
 };
 
-export const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
-export const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY';
-export const GOOGLE_WEB_CLIENT_ID = 'YOUR_GOOGLE_WEB_CLIENT_ID';
+export const GOOGLE_MAPS_API_KEY  = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ?? '';
+export const GEMINI_API_KEY        = process.env.EXPO_PUBLIC_GEMINI_API_KEY ?? '';
+export const GOOGLE_WEB_CLIENT_ID  = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID ?? '';
