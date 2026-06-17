@@ -227,7 +227,7 @@ export default function ChatScreen() {
           <View style={styles.emptyChat}>
             <MaterialCommunityIcons name="chat-outline" size={48} color={Colors.border} />
             <Text style={styles.emptyChatText}>Start the conversation!</Text>
-            <Text style={styles.emptyChatSub}>Ask about condition, negotiation, or meetup</Text>
+            <Text style={styles.emptyChatSub}>Ask about condition, price, or negotiation</Text>
           </View>
         }
       />

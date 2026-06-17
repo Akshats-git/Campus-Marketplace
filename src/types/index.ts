@@ -46,7 +46,6 @@ export interface Listing {
   tags: string[];
   isFree: boolean;
   isNegotiable: boolean;
-  meetupSpots: string[];
 }
 
 export interface Message {
@@ -99,15 +98,6 @@ export interface Category {
   icon: string;
   color: string;
   backgroundColor: string;
-}
-
-export interface MeetupSpot {
-  id: string;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  icon: string;
 }
 
 export interface Notification {

@@ -24,7 +24,7 @@ import { createListing, uploadListingImage } from '../../src/services/listings';
 import { generateListingFromImage, generateListingDescription, getSuggestedPrice } from '../../src/services/gemini';
 import { useAuthStore } from '../../src/stores/authStore';
 import { Colors, Shadows } from '../../src/constants/colors';
-import { CATEGORIES, CONDITIONS, MEETUP_SPOTS } from '../../src/constants/categories';
+import { CATEGORIES, CONDITIONS } from '../../src/constants/categories';
 import { LISTING_IMAGE_LIMIT } from '../../src/constants/config';
 import { validateListingTitle, validateListingPrice, validateDescription } from '../../src/utils/validators';
 import { ListingCondition } from '../../src/types';
@@ -58,9 +58,6 @@ export default function CreateScreen() {
   const [isFree, setIsFree] = useState(false);
   const [isNegotiable, setIsNegotiable] = useState(false);
   const [originalPrice, setOriginalPrice] = useState('');
-
-  // Meetup
-  const [selectedSpots, setSelectedSpots] = useState<string[]>([]);
 
   // Publishing
   const [uploading, setUploading] = useState(false);
@@ -187,7 +184,6 @@ export default function CreateScreen() {
         tags,
         isFree,
         isNegotiable,
-        meetupSpots: selectedSpots,
       });
 
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -507,43 +503,6 @@ export default function CreateScreen() {
               </Animated.View>
             )}
 
-            <View style={styles.field}>
-              <Text style={styles.fieldLabel}>Preferred Meetup Spots</Text>
-              <Text style={styles.fieldSub}>Select safe locations on campus</Text>
-              <View style={styles.spotList}>
-                {MEETUP_SPOTS.map(spot => (
-                  <Pressable
-                    key={spot.id}
-                    style={[
-                      styles.spotCard,
-                      selectedSpots.includes(spot.id) && styles.spotCardActive,
-                    ]}
-                    onPress={() =>
-                      setSelectedSpots(prev =>
-                        prev.includes(spot.id)
-                          ? prev.filter(s => s !== spot.id)
-                          : [...prev, spot.id]
-                      )
-                    }
-                  >
-                    <MaterialCommunityIcons
-                      name={spot.icon as any}
-                      size={20}
-                      color={selectedSpots.includes(spot.id) ? Colors.primary : Colors.textSecondary}
-                    />
-                    <View style={{ flex: 1 }}>
-                      <Text style={[styles.spotName, selectedSpots.includes(spot.id) && { color: Colors.primary }]}>
-                        {spot.name}
-                      </Text>
-                      <Text style={styles.spotDesc}>{spot.description}</Text>
-                    </View>
-                    {selectedSpots.includes(spot.id) && (
-                      <MaterialCommunityIcons name="check-circle" size={20} color={Colors.primary} />
-                    )}
-                  </Pressable>
-                ))}
-              </View>
-            </View>
           </Animated.View>
         )}
 
@@ -777,20 +736,6 @@ const styles = StyleSheet.create({
   priceInputWrap: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   currencySymbol: { fontSize: 22, fontWeight: '700', color: Colors.textSecondary },
   priceInput: { flex: 1, fontSize: 22, fontWeight: '700' },
-  spotList: { gap: 8 },
-  spotCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 14,
-    borderRadius: 14,
-    borderWidth: 1.5,
-    borderColor: Colors.border,
-    backgroundColor: Colors.surface,
-  },
-  spotCardActive: { borderColor: Colors.primary, backgroundColor: Colors.primary + '08' },
-  spotName: { fontSize: 14, fontWeight: '600', color: Colors.text },
-  spotDesc: { fontSize: 12, color: Colors.textHint },
   reviewTitle: { fontSize: 20, fontWeight: '800', color: Colors.text },
   reviewImage: { width: '100%', height: 240, borderRadius: 20 },
   reviewCard: {

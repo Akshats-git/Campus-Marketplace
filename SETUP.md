@@ -57,17 +57,7 @@ Open `.env` and fill in each key as you complete the steps below.
    EXPO_PUBLIC_GEMINI_API_KEY=AIzaSy...
    ```
 
-## Step 4: Google Maps Setup
-
-1. Go to [console.cloud.google.com](https://console.cloud.google.com)
-2. Enable **Maps SDK for Android** and **Maps SDK for iOS**
-3. Create an API key with restrictions for your app
-4. Add to `.env`:
-   ```
-   EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSy...
-   ```
-
-## Step 5: Firestore Security Rules
+## Step 4: Firestore Security Rules
 
 Deploy these rules in Firebase Console → Firestore → Rules:
 
@@ -96,21 +86,21 @@ service cloud.firestore {
 }
 ```
 
-## Step 6: Firestore Indexes
+## Step 5: Firestore Indexes
 
 Create composite indexes in Firebase Console for:
 - `listings`: `status ASC, createdAt DESC`
 - `listings`: `status ASC, categoryId ASC, createdAt DESC`
 - `chats`: `participants array-contains, lastMessageAt DESC`
 
-## Step 7: Run Locally
+## Step 6: Run Locally
 
 ```bash
 npm install
 npx expo start
 ```
 
-## Step 8: Build for Play Store
+## Step 7: Build for Play Store
 
 ```bash
 # Login to EAS
@@ -144,7 +134,6 @@ eas build --platform android --profile production
 | Firebase Remote Config | Feature flags | Free |
 | Firebase App Check | Security | Free |
 | Firebase Hosting | Web version | Free |
-| Google Maps SDK | Campus map, meetup spots | Free ($200/mo credit) |
 | Gemini API (1.5 Flash) | AI descriptions, smart pricing | Free tier |
 | Google Sign-In | OAuth authentication | Free |
 | Google Pay (UPI deeplink) | Payments | Free |

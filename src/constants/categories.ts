@@ -100,18 +100,3 @@ export const DEPARTMENTS = [
 ];
 
 export const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'PhD', 'Faculty'];
-
-export const MEETUP_SPOTS = [
-  { id: '1', name: 'Main Library', description: 'Ground floor entrance', latitude: 21.1938, longitude: 81.3066, icon: 'library' },
-  { id: '2', name: 'Tech Café', description: 'Near academic block', latitude: 21.1940, longitude: 81.3070, icon: 'coffee' },
-  { id: '3', name: 'Academic Block Lobby', description: 'Main entrance', latitude: 21.1942, longitude: 81.3072, icon: 'school' },
-  { id: '4', name: 'Hostel Common Room', description: 'Ground floor common room', latitude: 21.1935, longitude: 81.3060, icon: 'home' },
-  { id: '5', name: 'Sports Complex', description: 'Main gate', latitude: 21.1945, longitude: 81.3075, icon: 'basketball' },
-];
-
-export const CAMPUS_CENTER = {
-  latitude: 21.1940,
-  longitude: 81.3068,
-  latitudeDelta: 0.01,
-  longitudeDelta: 0.01,
-};

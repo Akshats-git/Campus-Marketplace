@@ -28,7 +28,7 @@ const { width, height } = Dimensions.get('window');
 const FEATURES = [
   { icon: 'tag-multiple', text: 'Buy & sell within IIT Bhilai' },
   { icon: 'shield-check', text: 'Verified student community only' },
-  { icon: 'map-marker', text: 'Safe campus meetup spots' },
+  { icon: 'handshake', text: 'Direct chat with sellers' },
   { icon: 'robot', text: 'AI-powered listing creation' },
 ];
 

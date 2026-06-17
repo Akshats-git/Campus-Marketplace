@@ -5,16 +5,12 @@ import {
   ScrollView,
   Pressable,
   Dimensions,
-  Linking,
   Alert,
   Share,
-  Platform,
 } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { Image } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router, Stack } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
@@ -27,7 +23,7 @@ import { useListingStore } from '../../src/stores/listingStore';
 import { toggleWishlist } from '../../src/services/listings';
 import { Colors, Shadows } from '../../src/constants/colors';
 import { Listing, User } from '../../src/types';
-import { CATEGORIES, MEETUP_SPOTS, CAMPUS_CENTER, CONDITIONS } from '../../src/constants/categories';
+import { CATEGORIES, CONDITIONS } from '../../src/constants/categories';
 import { formatPrice, formatRelativeTime, formatCondition } from '../../src/utils/formatters';
 
 const { width } = Dimensions.get('window');
@@ -92,7 +88,6 @@ export default function ListingDetailScreen() {
 
   const category = CATEGORIES.find(c => c.id === listing?.categoryId);
   const condition = CONDITIONS.find(c => c.id === listing?.condition);
-  const meetupSpots = MEETUP_SPOTS.filter(s => listing?.meetupSpots?.includes(s.id));
 
   if (loading) {
     return (
@@ -249,57 +244,6 @@ export default function ListingDetailScreen() {
                   <Text style={styles.tagText}>#{tag}</Text>
                 </View>
               ))}
-            </Animated.View>
-          )}
-
-          {/* Campus Map - Meetup Spots */}
-          {meetupSpots.length > 0 && (
-            <Animated.View entering={FadeInDown.delay(200).springify()} style={styles.section}>
-              <Text style={styles.sectionTitle}>Safe Meetup Spots</Text>
-              <Text style={styles.sectionSub}>Seller prefers meeting at these campus locations</Text>
-              <View style={styles.mapContainer}>
-                <MapView
-                  provider={PROVIDER_GOOGLE}
-                  style={styles.map}
-                  initialRegion={CAMPUS_CENTER}
-                  scrollEnabled={false}
-                  zoomEnabled={false}
-                >
-                  {meetupSpots.map(spot => (
-                    <Marker
-                      key={spot.id}
-                      coordinate={{ latitude: spot.latitude, longitude: spot.longitude }}
-                      title={spot.name}
-                      description={spot.description}
-                      pinColor={Colors.primary}
-                    />
-                  ))}
-                </MapView>
-                <Pressable
-                  style={styles.mapOverlay}
-                  onPress={() => {
-                    const spot = meetupSpots[0];
-                    const url = Platform.OS === 'ios'
-                      ? `maps:0,0?q=${spot.latitude},${spot.longitude}`
-                      : `geo:${spot.latitude},${spot.longitude}?q=${spot.latitude},${spot.longitude}(${spot.name})`;
-                    Linking.openURL(url);
-                  }}
-                >
-                  <MaterialCommunityIcons name="map-marker" size={16} color={Colors.primary} />
-                  <Text style={styles.mapOverlayText}>Open in Maps</Text>
-                </Pressable>
-              </View>
-              <View style={styles.spotList}>
-                {meetupSpots.map(spot => (
-                  <View key={spot.id} style={styles.spotItem}>
-                    <MaterialCommunityIcons name={spot.icon as any} size={18} color={Colors.primary} />
-                    <View>
-                      <Text style={styles.spotName}>{spot.name}</Text>
-                      <Text style={styles.spotDesc}>{spot.description}</Text>
-                    </View>
-                  </View>
-                ))}
-              </View>
             </Animated.View>
           )}
 
@@ -462,33 +406,6 @@ const styles = StyleSheet.create({
   tagsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   tag: { paddingHorizontal: 12, paddingVertical: 6, backgroundColor: Colors.primary + '15', borderRadius: 10 },
   tagText: { fontSize: 13, color: Colors.primary, fontWeight: '600' },
-  mapContainer: { borderRadius: 16, overflow: 'hidden', height: 200, position: 'relative' },
-  map: { width: '100%', height: '100%' },
-  mapOverlay: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: '#fff',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 10,
-    ...Shadows.small,
-  },
-  mapOverlayText: { fontSize: 13, fontWeight: '600', color: Colors.primary },
-  spotList: { gap: 8 },
-  spotItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 12,
-    backgroundColor: Colors.primary + '08',
-    borderRadius: 12,
-  },
-  spotName: { fontSize: 14, fontWeight: '600', color: Colors.text },
-  spotDesc: { fontSize: 12, color: Colors.textHint },
   safetyCard: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -19,7 +19,6 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Take photos for your listings",
         "NSPhotoLibraryUsageDescription": "Upload photos for your listings",
-        "NSLocationWhenInUseUsageDescription": "Show campus meetup locations"
       }
     },
     "android": {
@@ -33,8 +32,6 @@
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION",
         "VIBRATE",
         "RECEIVE_BOOT_COMPLETED",
         "POST_NOTIFICATIONS"
@@ -56,12 +53,6 @@
           "cameraPermission": "Allow Campus Marketplace to use your camera to take listing photos."
         }
       ],
-      [
-        "expo-location",
-        {
-          "locationWhenInUsePermission": "Allow Campus Marketplace to show campus locations for meetups."
-        }
-      ]
     ],
     "experiments": {
       "typedRoutes": true
