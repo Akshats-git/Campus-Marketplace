@@ -17,8 +17,8 @@ import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
-import { db, storage } from './firebase';
+import { db } from './firebase';
+import { uploadImage } from './cloudinary';
 import { Listing, ListingStatus } from '../types';
 import { PAGE_SIZE } from '../constants/config';
 
@@ -130,19 +130,7 @@ export async function uploadListingImage(
   index: number,
   onProgress?: (p: number) => void
 ): Promise<string> {
-  const response = await fetch(uri);
-  const blob = await response.blob();
-  const storageRef = ref(storage, `listings/${listingId}/image_${index}.jpg`);
-  const task = uploadBytesResumable(storageRef, blob, { contentType: 'image/jpeg' });
-
-  return new Promise((resolve, reject) => {
-    task.on(
-      'state_changed',
-      snap => onProgress?.((snap.bytesTransferred / snap.totalBytes) * 100),
-      reject,
-      async () => resolve(await getDownloadURL(task.snapshot.ref))
-    );
-  });
+  return uploadImage(uri, `listings/${listingId}`, onProgress);
 }
 
 export async function markAsSold(listingId: string): Promise<void> {

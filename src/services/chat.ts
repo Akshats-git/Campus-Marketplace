@@ -14,8 +14,8 @@ import {
   serverTimestamp,
   Unsubscribe,
 } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { db, storage } from './firebase';
+import { db } from './firebase';
+import { uploadImage } from './cloudinary';
 import { Chat, Message } from '../types';
 
 export async function getOrCreateChat(
@@ -125,13 +125,5 @@ export async function markMessagesRead(chatId: string, userId: string): Promise<
 }
 
 export async function uploadChatImage(uri: string, chatId: string): Promise<string> {
-  const response = await fetch(uri);
-  const blob = await response.blob();
-  const storageRef = ref(storage, `chats/${chatId}/${Date.now()}.jpg`);
-  const task = uploadBytesResumable(storageRef, blob, { contentType: 'image/jpeg' });
-  return new Promise((resolve, reject) => {
-    task.on('state_changed', null, reject, async () =>
-      resolve(await getDownloadURL(task.snapshot.ref))
-    );
-  });
+  return uploadImage(uri, `chats/${chatId}`);
 }

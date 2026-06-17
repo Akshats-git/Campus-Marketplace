@@ -24,7 +24,6 @@ Open `.env` and fill in each key as you complete the steps below.
 3. Enable these services:
    - **Authentication** → Enable Google Sign-In
    - **Cloud Firestore** → Create database (production mode)
-   - **Storage** → Create bucket
    - **Analytics** → Enable
 4. Register Android app with package: `com.iitbhilai.campusmarketplace`
 5. Download `google-services.json` → place it in the project root (it's gitignored)
@@ -33,7 +32,6 @@ Open `.env` and fill in each key as you complete the steps below.
    EXPO_PUBLIC_FIREBASE_API_KEY=AIzaSy...
    EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
    EXPO_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-   EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
    EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
    EXPO_PUBLIC_FIREBASE_APP_ID=1:123:android:abc
    EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=G-XXXXXXX
@@ -48,7 +46,22 @@ Open `.env` and fill in each key as you complete the steps below.
    EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789-abc.apps.googleusercontent.com
    ```
 
-## Step 3: Gemini AI Setup
+## Step 3: Cloudinary Setup (Free Image Hosting)
+
+1. Sign up at [cloudinary.com](https://cloudinary.com) (free, no credit card)
+2. From the Dashboard, copy your **Cloud Name**
+3. Go to **Settings → Upload** → scroll to **Upload presets** → **Add upload preset**
+   - Set **Signing Mode** to **Unsigned**
+   - Note the preset name (e.g., `ml_default`)
+4. Add to `.env`:
+   ```
+   EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
+   EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your-unsigned-preset
+   ```
+
+Free tier includes: 25 credits/month (~25K transformations or 25 GB managed storage).
+
+## Step 4: Gemini AI Setup
 
 1. Go to [aistudio.google.com](https://aistudio.google.com) → Get API Key
 2. The free tier (Gemini 1.5 Flash) is sufficient for this app
@@ -57,7 +70,7 @@ Open `.env` and fill in each key as you complete the steps below.
    EXPO_PUBLIC_GEMINI_API_KEY=AIzaSy...
    ```
 
-## Step 4: Firestore Security Rules
+## Step 5: Firestore Security Rules
 
 Deploy these rules in Firebase Console → Firestore → Rules:
 
@@ -86,21 +99,21 @@ service cloud.firestore {
 }
 ```
 
-## Step 5: Firestore Indexes
+## Step 6: Firestore Indexes
 
 Create composite indexes in Firebase Console for:
 - `listings`: `status ASC, createdAt DESC`
 - `listings`: `status ASC, categoryId ASC, createdAt DESC`
 - `chats`: `participants array-contains, lastMessageAt DESC`
 
-## Step 6: Run Locally
+## Step 7: Run Locally
 
 ```bash
 npm install
 npx expo start
 ```
 
-## Step 7: Build for Play Store
+## Step 8: Build for Play Store
 
 ```bash
 # Login to EAS
@@ -127,7 +140,7 @@ eas build --platform android --profile production
 | React Native + Expo | Cross-platform framework | Free |
 | Firebase Authentication | Google Sign-In, domain-locked | Free (Spark) |
 | Cloud Firestore | Real-time database | Free (50K reads/day) |
-| Firebase Storage | Image uploads | Free (5GB) |
+| Cloudinary | Image uploads & CDN | Free (25 credits/mo) |
 | Firebase Cloud Messaging | Push notifications | Free |
 | Firebase Analytics | Usage tracking | Free |
 | Firebase Crashlytics | Crash reporting | Free |
