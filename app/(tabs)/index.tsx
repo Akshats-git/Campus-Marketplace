@@ -2,7 +2,6 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
-  FlatList,
   Pressable,
   RefreshControl,
   Animated as RNAnimated,
@@ -87,7 +86,7 @@ export default function HomeScreen() {
         <Text style={styles.stickyTitle}>Campus Marketplace</Text>
       </RNAnimated.View>
 
-      <FlatList
+      <RNAnimated.FlatList
         data={listings}
         keyExtractor={item => item.id}
         numColumns={2}

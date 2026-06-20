@@ -17,7 +17,10 @@ import { auth, db } from './firebase';
 import { User } from '../types';
 import { GOOGLE_WEB_CLIENT_ID, INSTITUTE_EMAIL_DOMAIN } from '../constants/config';
 
-GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID });
+GoogleSignin.configure({
+  webClientId: GOOGLE_WEB_CLIENT_ID,
+  offlineAccess: true,
+});
 
 export async function signInWithGoogle(): Promise<FirebaseUser> {
   await GoogleSignin.hasPlayServices();
