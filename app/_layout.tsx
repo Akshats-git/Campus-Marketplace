@@ -75,6 +75,7 @@ function RootContent() {
           options={{ headerShown: true, headerTransparent: false }}
         />
         <Stack.Screen name="user/[id]" options={{ headerShown: true, headerTitle: 'Profile' }} />
+        <Stack.Screen name="edit-profile" options={{ headerShown: false }} />
       </Stack>
     </PaperProvider>
   );

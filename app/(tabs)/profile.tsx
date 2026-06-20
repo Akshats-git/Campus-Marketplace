@@ -7,6 +7,7 @@ import {
   Switch,
   useColorScheme,
   Alert,
+  Linking,
 } from 'react-native';
 import { Text, Divider } from 'react-native-paper';
 import { Image } from 'expo-image';
@@ -16,20 +17,24 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { router } from 'expo-router';
 import { signOut } from '../../src/services/auth';
-import { getUserListings } from '../../src/services/listings';
+import { getUserListings, getListing } from '../../src/services/listings';
 import { useAuthStore } from '../../src/stores/authStore';
+import { useListingStore } from '../../src/stores/listingStore';
 import { ListingCard } from '../../src/components/listing/ListingCard';
 import { Colors, Shadows } from '../../src/constants/colors';
 import { Listing } from '../../src/types';
 import { getInitials } from '../../src/utils/formatters';
+import { APP_NAME, APP_VERSION } from '../../src/constants/config';
 
 type Tab = 'listings' | 'sold' | 'wishlist';
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
-  const { userProfile, firebaseUser, reset } = useAuthStore();
+  const { userProfile, firebaseUser, reset, setUserProfile } = useAuthStore();
+  const { wishlist } = useListingStore();
   const [tab, setTab] = useState<Tab>('listings');
   const [myListings, setMyListings] = useState<Listing[]>([]);
+  const [wishlistListings, setWishlistListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const colorScheme = useColorScheme();
 
@@ -41,8 +46,19 @@ export default function ProfileScreen() {
     });
   }, [userProfile]);
 
+  useEffect(() => {
+    if (tab !== 'wishlist' || wishlist.length === 0) return;
+    Promise.all(wishlist.map(id => getListing(id))).then(results => {
+      setWishlistListings(results.filter((l): l is Listing => l !== null));
+    });
+  }, [tab, wishlist]);
+
   const activeListings = myListings.filter(l => l.status === 'active');
   const soldListings = myListings.filter(l => l.status === 'sold');
+
+  function handleEditProfile() {
+    router.push('/edit-profile');
+  }
 
   async function handleSignOut() {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
@@ -58,7 +74,7 @@ export default function ProfileScreen() {
     ]);
   }
 
-  const displayListings = tab === 'listings' ? activeListings : tab === 'sold' ? soldListings : [];
+  const displayListings = tab === 'listings' ? activeListings : tab === 'sold' ? soldListings : wishlistListings;
   const stars = Math.round(userProfile?.rating ?? 0);
 
   return (
@@ -95,7 +111,7 @@ export default function ProfileScreen() {
               <Text style={styles.infoText}>{userProfile?.year || 'Year not set'}</Text>
             </View>
           </View>
-          <Pressable style={styles.editBtn} onPress={() => {}}>
+          <Pressable style={styles.editBtn} onPress={handleEditProfile}>
             <MaterialCommunityIcons name="pencil" size={18} color="#fff" />
           </Pressable>
         </View>
@@ -170,10 +186,29 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Account</Text>
         {[
-          { icon: 'bell-outline', label: 'Notifications', action: () => {} },
-          { icon: 'shield-account-outline', label: 'Privacy & Security', action: () => {} },
-          { icon: 'help-circle-outline', label: 'Help & Support', action: () => {} },
-          { icon: 'information-outline', label: 'About Campus Marketplace', action: () => {} },
+          {
+            icon: 'bell-outline',
+            label: 'Notifications',
+            action: () => Linking.openSettings(),
+          },
+          {
+            icon: 'shield-account-outline',
+            label: 'Privacy & Security',
+            action: () => Alert.alert('Privacy & Security', 'Your data is stored securely with Firebase and is only visible to verified IIT Bhilai students. We do not share your information with third parties.'),
+          },
+          {
+            icon: 'help-circle-outline',
+            label: 'Help & Support',
+            action: () => Alert.alert('Help & Support', 'For any issues or feedback, contact us at:\n\nsupport@iitbhilai.ac.in', [
+              { text: 'OK' },
+              { text: 'Send Email', onPress: () => Linking.openURL('mailto:support@iitbhilai.ac.in?subject=Campus%20Marketplace%20Support') },
+            ]),
+          },
+          {
+            icon: 'information-outline',
+            label: 'About Campus Marketplace',
+            action: () => Alert.alert(APP_NAME, `Version ${APP_VERSION}\n\nA student marketplace exclusively for the IIT Bhilai community. Buy, sell, and trade items safely within campus.\n\nBuilt with ❤️ by IIT Bhilai students.`),
+          },
         ].map(item => (
           <Pressable key={item.label} style={styles.settingItem} onPress={item.action}>
             <MaterialCommunityIcons name={item.icon as any} size={22} color={Colors.textSecondary} />

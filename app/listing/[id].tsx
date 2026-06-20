@@ -292,9 +292,44 @@ export default function ListingDetailScreen() {
           entering={FadeInUp.springify()}
           style={[styles.ctaBar, { paddingBottom: Math.max(insets.bottom, 16) }]}
         >
-          <Pressable style={styles.contactBtn} onPress={() => {}}>
-            <MaterialCommunityIcons name="pencil" size={20} color="#fff" />
-            <Text style={styles.contactBtnText}>Edit Listing</Text>
+          <Pressable
+            style={[styles.contactBtn, { backgroundColor: Colors.error }]}
+            onPress={() => {
+              Alert.alert('Mark as Sold', 'Has this item been sold?', [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Mark as Sold',
+                  onPress: async () => {
+                    const { markAsSold } = await import('../../src/services/listings');
+                    await markAsSold(listing.id);
+                    setListing({ ...listing, status: 'sold' });
+                    Alert.alert('Done', 'Your listing has been marked as sold.');
+                  },
+                },
+              ]);
+            }}
+          >
+            <MaterialCommunityIcons name="check-circle" size={20} color="#fff" />
+            <Text style={styles.contactBtnText}>Mark as Sold</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.contactBtn, { backgroundColor: Colors.error + '80', flex: 0.6 }]}
+            onPress={() => {
+              Alert.alert('Delete Listing', 'Are you sure? This cannot be undone.', [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Delete',
+                  style: 'destructive',
+                  onPress: async () => {
+                    const { deleteListing } = await import('../../src/services/listings');
+                    await deleteListing(listing.id);
+                    router.back();
+                  },
+                },
+              ]);
+            }}
+          >
+            <MaterialCommunityIcons name="delete" size={20} color="#fff" />
           </Pressable>
         </Animated.View>
       )}

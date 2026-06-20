@@ -111,7 +111,7 @@ export default function HomeScreen() {
                   </Text>
                   <Text style={styles.heroTitle}>What are you looking for?</Text>
                 </View>
-                <Pressable style={styles.notifBtn} onPress={() => {}}>
+                <Pressable style={styles.notifBtn} onPress={() => router.push('/(tabs)/chats')}>
                   <MaterialCommunityIcons name="bell-outline" size={22} color="#fff" />
                 </Pressable>
               </View>

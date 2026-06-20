@@ -83,8 +83,9 @@ export const CONDITIONS = [
 ];
 
 export const HOSTELS = [
-  'Hostel A', 'Hostel B', 'Hostel C', 'Hostel D',
-  'Hostel E', 'Hostel F', 'Day Scholar', 'Faculty Quarters',
+  'Kanhar Hostel (BH1)',
+  'Gopad Hostel (BH2)',
+  'Indravati Hostel (GH1)',
 ];
 
 export const DEPARTMENTS = [
@@ -99,4 +100,4 @@ export const DEPARTMENTS = [
   'Other',
 ];
 
-export const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'PhD', 'Faculty'];
+export const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
