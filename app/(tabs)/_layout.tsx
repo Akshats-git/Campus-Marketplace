@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
   interpolate,
 } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../src/constants/colors';
 import { useChatStore } from '../../src/stores/chatStore';
 
@@ -47,9 +48,14 @@ function TabBar({ state, navigation }: any) {
             >
               <Animated.View style={[styles.tabContent, animStyle]}>
                 {tab.name === 'create' ? (
-                  <View style={styles.createBtn}>
+                  <LinearGradient
+                    colors={[Colors.primary, Colors.primaryDark]}
+                    style={styles.createBtn}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                  >
                     <MaterialCommunityIcons name="plus" size={28} color="#fff" />
-                  </View>
+                  </LinearGradient>
                 ) : (
                   <>
                     <View style={styles.iconWrap}>
@@ -123,12 +129,11 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 16,
-    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.35,
     shadowRadius: 8,
     elevation: 8,
     marginBottom: 4,

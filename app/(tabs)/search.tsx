@@ -16,7 +16,7 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { searchListings } from '../../src/services/listings';
 import { ListingCard } from '../../src/components/listing/ListingCard';
-import { Colors } from '../../src/constants/colors';
+import { Colors, Shadows } from '../../src/constants/colors';
 import { CATEGORIES, CONDITIONS } from '../../src/constants/categories';
 import { Listing } from '../../src/types';
 import { SEARCH_DEBOUNCE_MS } from '../../src/constants/config';
@@ -82,7 +82,6 @@ export default function SearchScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.searchBox}>
           <MaterialCommunityIcons name="magnify" size={22} color={Colors.textHint} />
@@ -118,7 +117,6 @@ export default function SearchScreen() {
         </Pressable>
       </View>
 
-      {/* Filter Panel */}
       {showFilters && (
         <Animated.View entering={FadeIn} style={styles.filterPanel}>
           <Text style={styles.filterTitle}>Category</Text>
@@ -130,7 +128,7 @@ export default function SearchScreen() {
             contentContainerStyle={{ gap: 8, paddingBottom: 4 }}
             renderItem={({ item }) => (
               <Pressable
-                style={[styles.filterChip, selectedCategory === item.id && { backgroundColor: item.color }]}
+                style={[styles.filterChip, selectedCategory === item.id && { backgroundColor: item.color, borderColor: item.color }]}
                 onPress={() => setSelectedCategory(selectedCategory === item.id ? null : item.id)}
               >
                 <MaterialCommunityIcons
@@ -169,7 +167,6 @@ export default function SearchScreen() {
         </Animated.View>
       )}
 
-      {/* Content */}
       {!hasSearched ? (
         <View style={styles.emptyState}>
           {recentSearches.length > 0 && (
@@ -323,7 +320,7 @@ const styles = StyleSheet.create({
   emptyState: { flex: 1, padding: 20 },
   recentHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
   recentTitle: { fontSize: 14, fontWeight: '700', color: Colors.textSecondary, textTransform: 'uppercase', letterSpacing: 0.6 },
-  clearText: { fontSize: 13, color: Colors.error, fontWeight: '600' },
+  clearText: { fontSize: 13, color: Colors.primary, fontWeight: '600' },
   recentList: { gap: 2 },
   recentItem: {
     flexDirection: 'row',

@@ -53,16 +53,14 @@ export function ListingCard({ listing, fullWidth = false }: Props) {
         onPressIn={() => { scale.value = withSpring(0.97); }}
         onPressOut={() => { scale.value = withSpring(1); }}
       >
-        {/* Image */}
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: listing.images[0] }}
             style={styles.image}
             contentFit="cover"
             transition={200}
-            placeholder="https://via.placeholder.com/300x200/EEF0F8"
+            placeholder="https://via.placeholder.com/300x200/F0F1F5"
           />
-          {/* Badges */}
           <View style={styles.topLeft}>
             {listing.isFree && (
               <View style={[styles.badge, { backgroundColor: Colors.success }]}>
@@ -86,7 +84,7 @@ export function ListingCard({ listing, fullWidth = false }: Props) {
                 <MaterialCommunityIcons
                   name={isWishlisted ? 'heart' : 'heart-outline'}
                   size={20}
-                  color={isWishlisted ? Colors.error : '#fff'}
+                  color={isWishlisted ? Colors.primary : '#fff'}
                 />
               </Pressable>
             </Animated.View>
@@ -99,7 +97,6 @@ export function ListingCard({ listing, fullWidth = false }: Props) {
           )}
         </View>
 
-        {/* Content */}
         <View style={styles.content}>
           <View style={styles.categoryRow}>
             {category && (
@@ -115,7 +112,7 @@ export function ListingCard({ listing, fullWidth = false }: Props) {
 
           <View style={styles.priceRow}>
             <Text style={styles.price}>{formatPrice(listing.price)}</Text>
-            {listing.isNegotiable && <Text style={styles.negotiable}>· Negotiable</Text>}
+            {listing.isNegotiable && <Text style={styles.negotiable}>Negotiable</Text>}
           </View>
 
           <View style={styles.footer}>
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(0,0,0,0.35)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -161,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 3,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.45)',
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 8,
@@ -180,9 +177,9 @@ const styles = StyleSheet.create({
   categoryText: { fontSize: 10, fontWeight: '700', letterSpacing: 0.3 },
   conditionText: { fontSize: 10, color: Colors.textHint, fontWeight: '500' },
   title: { fontSize: 14, fontWeight: '600', color: Colors.text, lineHeight: 20 },
-  priceRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  price: { fontSize: 16, fontWeight: '800', color: Colors.primary },
-  negotiable: { fontSize: 11, color: Colors.textHint },
+  priceRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  price: { fontSize: 16, fontWeight: '800', color: Colors.primaryDark },
+  negotiable: { fontSize: 10, color: Colors.success, fontWeight: '600', backgroundColor: Colors.successLight, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
   footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 },
   sellerRow: { flexDirection: 'row', alignItems: 'center', gap: 3, flex: 1 },
   sellerInfo: { fontSize: 11, color: Colors.textHint, flex: 1 },

@@ -71,7 +71,6 @@ export default function EditProfileScreen() {
         contentContainerStyle={{ paddingBottom: 120 + insets.bottom }}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Avatar */}
         <View style={styles.avatarSection}>
           {firebaseUser?.photoURL ? (
             <Image source={{ uri: firebaseUser.photoURL }} style={styles.avatar} contentFit="cover" />
@@ -83,7 +82,6 @@ export default function EditProfileScreen() {
           <Text style={styles.emailText}>{userProfile?.email}</Text>
         </View>
 
-        {/* Name */}
         <View style={styles.section}>
           <Text style={styles.label}>Display Name</Text>
           <TextInput
@@ -96,7 +94,6 @@ export default function EditProfileScreen() {
           />
         </View>
 
-        {/* Hostel */}
         <View style={styles.section}>
           <Text style={styles.label}>Hostel</Text>
           <View style={styles.optionsGrid}>
@@ -122,7 +119,6 @@ export default function EditProfileScreen() {
           </View>
         </View>
 
-        {/* Year */}
         <View style={styles.section}>
           <Text style={styles.label}>Year</Text>
           <View style={styles.yearRow}>
@@ -138,7 +134,6 @@ export default function EditProfileScreen() {
           </View>
         </View>
 
-        {/* Department */}
         <View style={styles.section}>
           <Text style={styles.label}>Department</Text>
           <View style={styles.deptList}>
@@ -160,7 +155,6 @@ export default function EditProfileScreen() {
         </View>
       </ScrollView>
 
-      {/* Save Button */}
       <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
         <Pressable
           style={[styles.saveBtn, (!hasChanges || saving) && styles.saveBtnDisabled]}
@@ -181,12 +175,12 @@ export default function EditProfileScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },
   avatarSection: { alignItems: 'center', paddingVertical: 28, gap: 10, backgroundColor: Colors.surface },
-  avatar: { width: 88, height: 88, borderRadius: 44, borderWidth: 3, borderColor: Colors.primary + '30' },
+  avatar: { width: 88, height: 88, borderRadius: 44, borderWidth: 3, borderColor: Colors.primary + '25' },
   avatarFallback: {
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: Colors.primary + '20',
+    backgroundColor: Colors.primary + '15',
     alignItems: 'center',
     justifyContent: 'center',
   },

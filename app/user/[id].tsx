@@ -53,7 +53,7 @@ export default function UserProfileScreen() {
     <>
       <Stack.Screen options={{ title: user.displayName, headerStyle: { backgroundColor: Colors.primaryDark }, headerTintColor: '#fff' }} />
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
-        <LinearGradient colors={[Colors.primaryDark, Colors.primary]} style={styles.header}>
+        <LinearGradient colors={['#E85555', '#FF6B6B', '#FF8E8E']} style={styles.header} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <View style={styles.avatarSection}>
             {user.photoURL ? (
               <Image source={{ uri: user.photoURL }} style={styles.avatar} contentFit="cover" />
@@ -75,7 +75,7 @@ export default function UserProfileScreen() {
           </View>
           <View style={styles.starsRow}>
             {[1,2,3,4,5].map(s => (
-              <MaterialCommunityIcons key={s} name={s <= stars ? 'star' : 'star-outline'} size={16} color={s <= stars ? Colors.accentLight : 'rgba(255,255,255,0.3)'} />
+              <MaterialCommunityIcons key={s} name={s <= stars ? 'star' : 'star-outline'} size={16} color={s <= stars ? Colors.accent : 'rgba(255,255,255,0.3)'} />
             ))}
             <Text style={styles.ratingText}>{user.rating.toFixed(1)} ({user.ratingCount})</Text>
           </View>

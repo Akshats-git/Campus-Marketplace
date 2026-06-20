@@ -37,15 +37,12 @@ export default function CreateScreen() {
   const insets = useSafeAreaInsets();
   const { userProfile, firebaseUser } = useAuthStore();
 
-  // Step
   const [step, setStep] = useState<Step>('photos');
   const stepIndex = STEPS.indexOf(step);
 
-  // Images
   const [images, setImages] = useState<string[]>([]);
   const [aiLoading, setAiLoading] = useState(false);
 
-  // Details
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
@@ -53,17 +50,14 @@ export default function CreateScreen() {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
 
-  // Pricing
   const [price, setPrice] = useState('');
   const [isFree, setIsFree] = useState(false);
   const [isNegotiable, setIsNegotiable] = useState(false);
   const [originalPrice, setOriginalPrice] = useState('');
 
-  // Publishing
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  // AI suggestion state
   const [aiSuggesting, setAiSuggesting] = useState(false);
 
   async function pickImages() {
@@ -210,9 +204,8 @@ export default function CreateScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}
     >
-      {/* Header */}
       <LinearGradient
-        colors={[Colors.primaryDark, Colors.primary]}
+        colors={['#E85555', '#FF6B6B']}
         style={[styles.header, { paddingTop: insets.top + 8 }]}
       >
         <Text style={styles.headerTitle}>Sell an Item</Text>
@@ -221,9 +214,9 @@ export default function CreateScreen() {
             <View key={s} style={styles.progressItem}>
               <View style={[styles.progressDot, i <= stepIndex && styles.progressDotActive]}>
                 {i < stepIndex ? (
-                  <MaterialCommunityIcons name="check" size={12} color="#fff" />
+                  <MaterialCommunityIcons name="check" size={12} color={Colors.primaryDark} />
                 ) : (
-                  <Text style={styles.progressNum}>{i + 1}</Text>
+                  <Text style={[styles.progressNum, i <= stepIndex && { color: Colors.primaryDark }]}>{i + 1}</Text>
                 )}
               </View>
               {i < STEPS.length - 1 && (
@@ -233,10 +226,10 @@ export default function CreateScreen() {
           ))}
         </View>
         <Text style={styles.stepLabel}>
-          {step === 'photos' && '📸 Add Photos'}
-          {step === 'details' && '📝 Item Details'}
-          {step === 'pricing' && '💰 Set Price'}
-          {step === 'publish' && '🚀 Review & Publish'}
+          {step === 'photos' && 'Add Photos'}
+          {step === 'details' && 'Item Details'}
+          {step === 'pricing' && 'Set Price'}
+          {step === 'publish' && 'Review & Publish'}
         </Text>
       </LinearGradient>
 
@@ -245,10 +238,8 @@ export default function CreateScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        {/* STEP: Photos */}
         {step === 'photos' && (
           <Animated.View entering={FadeInDown.springify()} style={styles.section}>
-            {/* AI Analyze button */}
             {images.length > 0 && (
               <Animated.View entering={FadeIn}>
                 <Pressable
@@ -257,7 +248,7 @@ export default function CreateScreen() {
                   disabled={aiLoading}
                 >
                   <LinearGradient
-                    colors={['#667eea', '#764ba2']}
+                    colors={['#9B59B6', '#8E44AD']}
                     style={styles.aiBtnGradient}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
@@ -268,7 +259,7 @@ export default function CreateScreen() {
                       <MaterialCommunityIcons name="robot" size={20} color="#fff" />
                     )}
                     <Text style={styles.aiBtnText}>
-                      {aiLoading ? 'Analyzing with Gemini AI...' : '✨ Auto-fill with Gemini AI'}
+                      {aiLoading ? 'Analyzing with Gemini AI...' : 'Auto-fill with Gemini AI'}
                     </Text>
                   </LinearGradient>
                 </Pressable>
@@ -301,13 +292,15 @@ export default function CreateScreen() {
                 </Pressable>
               )}
             </View>
-            <Text style={styles.tip}>
-              💡 Tip: First photo is the cover. Good photos get 3× more views.
-            </Text>
+            <View style={styles.tipCard}>
+              <MaterialCommunityIcons name="lightbulb-outline" size={18} color={Colors.info} />
+              <Text style={styles.tip}>
+                First photo is the cover. Good photos get 3x more views.
+              </Text>
+            </View>
           </Animated.View>
         )}
 
-        {/* STEP: Details */}
         {step === 'details' && (
           <Animated.View entering={FadeInDown.springify()} style={styles.section}>
             <View style={styles.field}>
@@ -332,9 +325,9 @@ export default function CreateScreen() {
                   disabled={!title || !categoryId || aiSuggesting}
                 >
                   {aiSuggesting ? (
-                    <ActivityIndicator size={12} color={Colors.primary} />
+                    <ActivityIndicator size={12} color={Colors.secondary} />
                   ) : (
-                    <MaterialCommunityIcons name="robot" size={14} color={Colors.primary} />
+                    <MaterialCommunityIcons name="robot" size={14} color={Colors.secondary} />
                   )}
                   <Text style={styles.aiInlineBtnText}>AI Write</Text>
                 </Pressable>
@@ -360,7 +353,7 @@ export default function CreateScreen() {
                     key={cat.id}
                     style={[
                       styles.catOption,
-                      { borderColor: cat.color + '40', backgroundColor: cat.backgroundColor },
+                      { borderColor: cat.color + '30', backgroundColor: cat.backgroundColor },
                       categoryId === cat.id && { borderColor: cat.color, borderWidth: 2 },
                     ]}
                     onPress={() => setCategoryId(cat.id)}
@@ -420,7 +413,7 @@ export default function CreateScreen() {
                     onPress={() => setTags(prev => prev.filter(x => x !== t))}
                   >
                     <Text style={styles.tagText}>#{t}</Text>
-                    <MaterialCommunityIcons name="close" size={12} color={Colors.primary} />
+                    <MaterialCommunityIcons name="close" size={12} color={Colors.secondary} />
                   </Pressable>
                 ))}
               </View>
@@ -428,7 +421,6 @@ export default function CreateScreen() {
           </Animated.View>
         )}
 
-        {/* STEP: Pricing */}
         {step === 'pricing' && (
           <Animated.View entering={FadeInDown.springify()} style={styles.section}>
             <View style={styles.toggleRow}>
@@ -447,16 +439,16 @@ export default function CreateScreen() {
             {!isFree && (
               <Animated.View entering={FadeIn} style={styles.priceSection}>
                 <View style={styles.fieldLabelRow}>
-                  <Text style={styles.fieldLabel}>Asking Price (₹) *</Text>
+                  <Text style={styles.fieldLabel}>Asking Price *</Text>
                   <Pressable
                     style={[styles.aiInlineBtn, (!title || !categoryId) && styles.aiInlineBtnDisabled]}
                     onPress={handleAiPrice}
                     disabled={!title || !categoryId || aiSuggesting}
                   >
                     {aiSuggesting ? (
-                      <ActivityIndicator size={12} color={Colors.primary} />
+                      <ActivityIndicator size={12} color={Colors.secondary} />
                     ) : (
-                      <MaterialCommunityIcons name="robot" size={14} color={Colors.primary} />
+                      <MaterialCommunityIcons name="robot" size={14} color={Colors.secondary} />
                     )}
                     <Text style={styles.aiInlineBtnText}>Suggest Price</Text>
                   </Pressable>
@@ -496,7 +488,7 @@ export default function CreateScreen() {
                   <Switch
                     value={isNegotiable}
                     onValueChange={setIsNegotiable}
-                    trackColor={{ true: Colors.primary }}
+                    trackColor={{ true: Colors.secondary }}
                     thumbColor="#fff"
                   />
                 </View>
@@ -506,7 +498,6 @@ export default function CreateScreen() {
           </Animated.View>
         )}
 
-        {/* STEP: Publish */}
         {step === 'publish' && (
           <Animated.View entering={FadeInDown.springify()} style={styles.section}>
             <Text style={styles.reviewTitle}>Review your listing</Text>
@@ -546,7 +537,12 @@ export default function CreateScreen() {
               <View style={styles.uploadProgress}>
                 <Text style={styles.uploadText}>Uploading... {Math.round(uploadProgress)}%</Text>
                 <View style={styles.progressBar}>
-                  <View style={[styles.progressFill, { width: `${uploadProgress}%` }]} />
+                  <LinearGradient
+                    colors={[Colors.primary, Colors.primaryLight]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={[styles.progressFill, { width: `${uploadProgress}%` }]}
+                  />
                 </View>
               </View>
             )}
@@ -554,14 +550,13 @@ export default function CreateScreen() {
         )}
       </ScrollView>
 
-      {/* Footer */}
       <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
         {stepIndex > 0 && (
           <Pressable
             style={styles.backBtn}
             onPress={() => setStep(STEPS[stepIndex - 1])}
           >
-            <Text style={styles.backBtnText}>← Back</Text>
+            <Text style={styles.backBtnText}>Back</Text>
           </Pressable>
         )}
         <Pressable
@@ -572,9 +567,19 @@ export default function CreateScreen() {
           {uploading ? (
             <ActivityIndicator size={20} color="#fff" />
           ) : (
-            <Text style={styles.nextBtnText}>
-              {step === 'publish' ? 'Publish Listing' : 'Continue →'}
-            </Text>
+            <LinearGradient
+              colors={canProceed() ? [Colors.primary, Colors.primaryDark] : [Colors.textHint, Colors.textHint]}
+              style={styles.nextBtnGradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <Text style={styles.nextBtnText}>
+                {step === 'publish' ? 'Publish Listing' : 'Continue'}
+              </Text>
+              {step !== 'publish' && (
+                <MaterialCommunityIcons name="arrow-right" size={20} color="#fff" />
+              )}
+            </LinearGradient>
           )}
         </Pressable>
       </View>
@@ -597,10 +602,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   progressDotActive: { backgroundColor: '#fff' },
-  progressNum: { fontSize: 12, fontWeight: '700', color: Colors.primary },
+  progressNum: { fontSize: 12, fontWeight: '700', color: 'rgba(255,255,255,0.7)' },
   progressLine: { width: 40, height: 2, backgroundColor: 'rgba(255,255,255,0.3)', marginHorizontal: 4 },
   progressLineActive: { backgroundColor: '#fff' },
-  stepLabel: { fontSize: 15, fontWeight: '600', color: 'rgba(255,255,255,0.9)', textAlign: 'center' },
+  stepLabel: { fontSize: 15, fontWeight: '600', color: 'rgba(255,255,255,0.92)', textAlign: 'center' },
   content: { padding: 20, gap: 8 },
   section: { gap: 20 },
   aiBtn: { marginBottom: 8 },
@@ -648,7 +653,8 @@ const styles = StyleSheet.create({
   },
   addImageText: { fontSize: 12, color: Colors.primary, fontWeight: '600' },
   addImageSub: { fontSize: 10, color: Colors.textHint },
-  tip: { fontSize: 13, color: Colors.textHint, backgroundColor: Colors.infoLight, padding: 12, borderRadius: 10 },
+  tipCard: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: Colors.infoLight, padding: 14, borderRadius: 12 },
+  tip: { flex: 1, fontSize: 13, color: Colors.info, fontWeight: '500' },
   field: { gap: 8 },
   fieldLabel: { fontSize: 14, fontWeight: '700', color: Colors.text },
   fieldLabelRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
@@ -670,11 +676,11 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    backgroundColor: Colors.primary + '15',
+    backgroundColor: Colors.secondary + '15',
     borderRadius: 8,
   },
   aiInlineBtnDisabled: { opacity: 0.4 },
-  aiInlineBtnText: { fontSize: 12, color: Colors.primary, fontWeight: '700' },
+  aiInlineBtnText: { fontSize: 12, color: Colors.secondary, fontWeight: '700' },
   catGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   catOption: {
     width: '30%',
@@ -715,10 +721,10 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 12,
     paddingVertical: 7,
-    backgroundColor: Colors.primary + '15',
+    backgroundColor: Colors.secondary + '15',
     borderRadius: 10,
   },
-  tagText: { fontSize: 13, color: Colors.primary, fontWeight: '600' },
+  tagText: { fontSize: 13, color: Colors.secondary, fontWeight: '600' },
   toggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -746,7 +752,7 @@ const styles = StyleSheet.create({
     ...Shadows.medium,
   },
   reviewItemTitle: { fontSize: 18, fontWeight: '700', color: Colors.text },
-  reviewPrice: { fontSize: 22, fontWeight: '800', color: Colors.primary },
+  reviewPrice: { fontSize: 22, fontWeight: '800', color: Colors.primaryDark },
   reviewDesc: { fontSize: 14, color: Colors.textSecondary, lineHeight: 22 },
   reviewMeta: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   reviewMetaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
@@ -754,7 +760,7 @@ const styles = StyleSheet.create({
   uploadProgress: { gap: 8 },
   uploadText: { fontSize: 14, color: Colors.textSecondary, textAlign: 'center' },
   progressBar: { height: 6, borderRadius: 3, backgroundColor: Colors.border, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: Colors.primary, borderRadius: 3 },
+  progressFill: { height: '100%', borderRadius: 3 },
   footer: {
     position: 'absolute',
     bottom: 0,
@@ -779,11 +785,16 @@ const styles = StyleSheet.create({
   backBtnText: { fontSize: 16, fontWeight: '600', color: Colors.textSecondary },
   nextBtn: {
     flex: 2,
-    paddingVertical: 16,
     borderRadius: 16,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
+    overflow: 'hidden',
   },
-  nextBtnDisabled: { backgroundColor: Colors.textHint },
+  nextBtnDisabled: { opacity: 0.5 },
+  nextBtnGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 16,
+  },
   nextBtnText: { fontSize: 16, fontWeight: '700', color: '#fff' },
 });

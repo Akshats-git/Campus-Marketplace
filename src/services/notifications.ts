@@ -29,7 +29,7 @@ export async function registerForPushNotifications(uid: string): Promise<string 
       name: 'Campus Marketplace',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#3949AB',
+      lightColor: '#FF6B6B',
     });
   }
 

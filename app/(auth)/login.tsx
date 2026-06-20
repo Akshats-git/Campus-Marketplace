@@ -57,18 +57,17 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[Colors.primaryDark, Colors.primary, '#5C6BC0']}
+        colors={['#E85555', '#FF6B6B', '#FF8E8E']}
         style={StyleSheet.absoluteFill}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       />
 
-      {/* Background circles */}
       <View style={[styles.circle, styles.circle1]} />
       <View style={[styles.circle, styles.circle2]} />
+      <View style={[styles.circle, styles.circle3]} />
 
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.inner}>
-        {/* Logo section */}
         <Animated.View entering={FadeInDown.delay(100).springify()} style={styles.logoSection}>
           <View style={styles.logoContainer}>
             <MaterialCommunityIcons name="store" size={52} color={Colors.primary} />
@@ -77,7 +76,6 @@ export default function LoginScreen() {
           <Text style={styles.tagline}>IIT Bhilai's student community</Text>
         </Animated.View>
 
-        {/* Feature pills */}
         <Animated.View entering={FadeInDown.delay(300).springify()} style={styles.features}>
           {FEATURES.map((f, i) => (
             <Animated.View
@@ -91,7 +89,6 @@ export default function LoginScreen() {
           ))}
         </Animated.View>
 
-        {/* Card */}
         <Animated.View entering={FadeInUp.delay(200).springify()} style={styles.card}>
           <Text style={styles.cardTitle}>Welcome back</Text>
           <Text style={styles.cardSubtitle}>
@@ -135,10 +132,11 @@ const styles = StyleSheet.create({
   circle: {
     position: 'absolute',
     borderRadius: 999,
-    backgroundColor: 'rgba(255,255,255,0.06)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   circle1: { width: 300, height: 300, top: -80, right: -80 },
   circle2: { width: 200, height: 200, bottom: 100, left: -60 },
+  circle3: { width: 150, height: 150, top: height * 0.35, right: -40 },
   logoSection: { alignItems: 'center', gap: 12 },
   logoContainer: {
     width: 96,
@@ -149,25 +147,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 16,
     elevation: 12,
   },
   appName: { fontSize: 28, fontWeight: '800', color: '#fff', letterSpacing: 0.3 },
-  tagline: { fontSize: 14, color: 'rgba(255,255,255,0.75)', letterSpacing: 0.5 },
+  tagline: { fontSize: 14, color: 'rgba(255,255,255,0.8)', letterSpacing: 0.5 },
   features: { gap: 10, marginVertical: 8 },
   featurePill: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    backgroundColor: 'rgba(255,255,255,0.15)',
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.15)',
   },
-  featureText: { color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: '500' },
+  featureText: { color: 'rgba(255,255,255,0.92)', fontSize: 14, fontWeight: '500' },
   card: {
     backgroundColor: '#fff',
     borderRadius: 28,
@@ -175,7 +173,7 @@ const styles = StyleSheet.create({
     gap: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.15,
     shadowRadius: 24,
     elevation: 16,
   },

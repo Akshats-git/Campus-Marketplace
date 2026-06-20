@@ -83,10 +83,11 @@ export default function ProfileScreen() {
       contentContainerStyle={{ paddingBottom: 120 + insets.bottom }}
       showsVerticalScrollIndicator={false}
     >
-      {/* Profile Header */}
       <LinearGradient
-        colors={[Colors.primaryDark, Colors.primary]}
+        colors={['#E85555', '#FF6B6B', '#FF8E8E']}
         style={[styles.header, { paddingTop: insets.top + 16 }]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
       >
         <View style={styles.headerRow}>
           <View style={styles.avatarWrap}>
@@ -105,7 +106,7 @@ export default function ProfileScreen() {
             <Text style={styles.name}>{userProfile?.displayName}</Text>
             <Text style={styles.email}>{userProfile?.email}</Text>
             <View style={styles.infoRow}>
-              <MaterialCommunityIcons name="home-city-outline" size={14} color="rgba(255,255,255,0.8)" />
+              <MaterialCommunityIcons name="home-city-outline" size={14} color="rgba(255,255,255,0.85)" />
               <Text style={styles.infoText}>{userProfile?.hostel || 'No hostel set'}</Text>
               <Text style={styles.dot}>·</Text>
               <Text style={styles.infoText}>{userProfile?.year || 'Year not set'}</Text>
@@ -116,7 +117,6 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
 
-        {/* Stats */}
         <View style={styles.statsRow}>
           {[
             { label: 'Listings', value: userProfile?.listingsCount ?? 0 },
@@ -131,21 +131,19 @@ export default function ProfileScreen() {
           ))}
         </View>
 
-        {/* Star rating */}
         <View style={styles.starsRow}>
           {[1, 2, 3, 4, 5].map(s => (
             <MaterialCommunityIcons
               key={s}
               name={s <= stars ? 'star' : 'star-outline'}
               size={16}
-              color={s <= stars ? Colors.accentLight : 'rgba(255,255,255,0.4)'}
+              color={s <= stars ? Colors.accent : 'rgba(255,255,255,0.4)'}
             />
           ))}
           <Text style={styles.ratingCount}>({userProfile?.ratingCount ?? 0} reviews)</Text>
         </View>
       </LinearGradient>
 
-      {/* Tabs */}
       <View style={styles.tabs}>
         {(['listings', 'sold', 'wishlist'] as Tab[]).map(t => (
           <Pressable
@@ -160,7 +158,6 @@ export default function ProfileScreen() {
         ))}
       </View>
 
-      {/* Listings */}
       <View style={styles.listingsGrid}>
         {displayListings.length === 0 ? (
           <View style={styles.emptyTab}>
@@ -182,7 +179,6 @@ export default function ProfileScreen() {
 
       <Divider style={styles.divider} />
 
-      {/* Settings */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Account</Text>
         {[
@@ -211,13 +207,17 @@ export default function ProfileScreen() {
           },
         ].map(item => (
           <Pressable key={item.label} style={styles.settingItem} onPress={item.action}>
-            <MaterialCommunityIcons name={item.icon as any} size={22} color={Colors.textSecondary} />
+            <View style={styles.settingIconWrap}>
+              <MaterialCommunityIcons name={item.icon as any} size={20} color={Colors.primary} />
+            </View>
             <Text style={styles.settingLabel}>{item.label}</Text>
             <MaterialCommunityIcons name="chevron-right" size={20} color={Colors.textHint} />
           </Pressable>
         ))}
         <Pressable style={[styles.settingItem, styles.signOutItem]} onPress={handleSignOut}>
-          <MaterialCommunityIcons name="logout" size={22} color={Colors.error} />
+          <View style={[styles.settingIconWrap, { backgroundColor: Colors.errorLight }]}>
+            <MaterialCommunityIcons name="logout" size={20} color={Colors.error} />
+          </View>
           <Text style={[styles.settingLabel, { color: Colors.error }]}>Sign Out</Text>
         </Pressable>
       </View>
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   name: { fontSize: 20, fontWeight: '800', color: '#fff' },
   email: { fontSize: 13, color: 'rgba(255,255,255,0.75)' },
   infoRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
-  infoText: { fontSize: 13, color: 'rgba(255,255,255,0.85)' },
+  infoText: { fontSize: 13, color: 'rgba(255,255,255,0.88)' },
   dot: { color: 'rgba(255,255,255,0.6)', fontSize: 14 },
   editBtn: {
     width: 36,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   },
   statsRow: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: 'rgba(255,255,255,0.18)',
     borderRadius: 16,
     paddingVertical: 14,
   },
@@ -303,6 +303,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     borderBottomWidth: 1,
     borderBottomColor: Colors.divider,
+  },
+  settingIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: Colors.primary + '12',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   settingLabel: { flex: 1, fontSize: 15, color: Colors.text, fontWeight: '500' },
   signOutItem: { borderBottomWidth: 0, marginTop: 8 },

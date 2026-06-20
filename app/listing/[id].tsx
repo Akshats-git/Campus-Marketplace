@@ -14,6 +14,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router, Stack } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { getListing } from '../../src/services/listings';
 import { getOrCreateChat } from '../../src/services/chat';
@@ -115,7 +116,7 @@ export default function ListingDetailScreen() {
                 <MaterialCommunityIcons
                   name={isWishlisted ? 'heart' : 'heart-outline'}
                   size={24}
-                  color={isWishlisted ? Colors.error : '#fff'}
+                  color={isWishlisted ? Colors.primary : '#fff'}
                 />
               </Pressable>
               <Pressable onPress={handleShare} style={styles.headerBtn}>
@@ -127,7 +128,6 @@ export default function ListingDetailScreen() {
       />
 
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-        {/* Image Carousel */}
         <View style={styles.imageCarousel}>
           <ScrollView
             horizontal
@@ -141,7 +141,6 @@ export default function ListingDetailScreen() {
             ))}
           </ScrollView>
 
-          {/* Image dots */}
           {listing.images.length > 1 && (
             <View style={styles.imageDots}>
               {listing.images.map((_, i) => (
@@ -150,7 +149,6 @@ export default function ListingDetailScreen() {
             </View>
           )}
 
-          {/* Status badge */}
           {listing.status !== 'active' && (
             <View style={[
               styles.statusBadge,
@@ -162,7 +160,6 @@ export default function ListingDetailScreen() {
         </View>
 
         <View style={styles.content}>
-          {/* Title + Price */}
           <Animated.View entering={FadeInDown.delay(50).springify()} style={styles.titleSection}>
             <View style={styles.categoryRow}>
               {category && (
@@ -198,7 +195,6 @@ export default function ListingDetailScreen() {
             </View>
           </Animated.View>
 
-          {/* Seller Card */}
           <Animated.View entering={FadeInDown.delay(100).springify()} style={styles.sellerCard}>
             <Pressable
               style={styles.sellerRow}
@@ -215,14 +211,14 @@ export default function ListingDetailScreen() {
                 <View style={styles.sellerNameRow}>
                   <Text style={styles.sellerName}>{seller?.displayName ?? 'Student'}</Text>
                   {seller?.isVerified && (
-                    <MaterialCommunityIcons name="check-decagram" size={16} color={Colors.primary} />
+                    <MaterialCommunityIcons name="check-decagram" size={16} color={Colors.secondary} />
                   )}
                 </View>
                 <View style={styles.sellerMeta}>
                   <MaterialCommunityIcons name="home-city-outline" size={13} color={Colors.textHint} />
                   <Text style={styles.sellerMetaText}>{listing.sellerHostel}</Text>
                   <Text style={styles.sellerDot}>·</Text>
-                  <MaterialCommunityIcons name="star" size={13} color={Colors.accentLight} />
+                  <MaterialCommunityIcons name="star" size={13} color={Colors.accent} />
                   <Text style={styles.sellerMetaText}>{seller?.rating?.toFixed(1) ?? '—'}</Text>
                 </View>
               </View>
@@ -230,13 +226,11 @@ export default function ListingDetailScreen() {
             </Pressable>
           </Animated.View>
 
-          {/* Description */}
           <Animated.View entering={FadeInDown.delay(150).springify()} style={styles.section}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>{listing.description}</Text>
           </Animated.View>
 
-          {/* Tags */}
           {listing.tags?.length > 0 && (
             <Animated.View entering={FadeInDown.delay(180).springify()} style={styles.tagsRow}>
               {listing.tags.map(tag => (
@@ -247,7 +241,6 @@ export default function ListingDetailScreen() {
             </Animated.View>
           )}
 
-          {/* Safety tip */}
           <Animated.View entering={FadeInDown.delay(250).springify()} style={styles.safetyCard}>
             <MaterialCommunityIcons name="shield-check" size={20} color={Colors.success} />
             <Text style={styles.safetyText}>
@@ -257,7 +250,6 @@ export default function ListingDetailScreen() {
         </View>
       </ScrollView>
 
-      {/* Bottom CTA */}
       {!isMine && listing.status === 'active' && (
         <Animated.View
           entering={FadeInUp.springify()}
@@ -267,7 +259,7 @@ export default function ListingDetailScreen() {
             <MaterialCommunityIcons
               name={isWishlisted ? 'heart' : 'heart-outline'}
               size={24}
-              color={isWishlisted ? Colors.error : Colors.textSecondary}
+              color={isWishlisted ? Colors.primary : Colors.textSecondary}
             />
           </Pressable>
           <Pressable
@@ -278,10 +270,15 @@ export default function ListingDetailScreen() {
             {contactLoading ? (
               <ActivityIndicator size={20} color="#fff" />
             ) : (
-              <>
+              <LinearGradient
+                colors={[Colors.primary, Colors.primaryDark]}
+                style={styles.contactBtnGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
                 <MaterialCommunityIcons name="chat" size={20} color="#fff" />
                 <Text style={styles.contactBtnText}>Chat with Seller</Text>
-              </>
+              </LinearGradient>
             )}
           </Pressable>
         </Animated.View>
@@ -293,7 +290,7 @@ export default function ListingDetailScreen() {
           style={[styles.ctaBar, { paddingBottom: Math.max(insets.bottom, 16) }]}
         >
           <Pressable
-            style={[styles.contactBtn, { backgroundColor: Colors.error }]}
+            style={styles.markSoldBtn}
             onPress={() => {
               Alert.alert('Mark as Sold', 'Has this item been sold?', [
                 { text: 'Cancel', style: 'cancel' },
@@ -313,7 +310,7 @@ export default function ListingDetailScreen() {
             <Text style={styles.contactBtnText}>Mark as Sold</Text>
           </Pressable>
           <Pressable
-            style={[styles.contactBtn, { backgroundColor: Colors.error + '80', flex: 0.6 }]}
+            style={styles.deleteBtn}
             onPress={() => {
               Alert.alert('Delete Listing', 'Are you sure? This cannot be undone.', [
                 { text: 'Cancel', style: 'cancel' },
@@ -385,7 +382,7 @@ const styles = StyleSheet.create({
   viewCount: { fontSize: 13, color: Colors.textHint },
   title: { fontSize: 22, fontWeight: '800', color: Colors.text, lineHeight: 30 },
   priceRow: { flexDirection: 'row', alignItems: 'center', gap: 10, flexWrap: 'wrap' },
-  price: { fontSize: 28, fontWeight: '900', color: Colors.primary },
+  price: { fontSize: 28, fontWeight: '900', color: Colors.primaryDark },
   originalPrice: {
     fontSize: 16,
     color: Colors.textHint,
@@ -394,7 +391,7 @@ const styles = StyleSheet.create({
   negotiableBadge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    backgroundColor: Colors.success + '20',
+    backgroundColor: Colors.successLight,
     borderRadius: 8,
   },
   negotiableText: { fontSize: 12, color: Colors.success, fontWeight: '700' },
@@ -423,7 +420,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: Colors.primary + '25',
+    backgroundColor: Colors.primary + '18',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -439,8 +436,8 @@ const styles = StyleSheet.create({
   sectionSub: { fontSize: 13, color: Colors.textHint, marginTop: -6 },
   description: { fontSize: 15, color: Colors.textSecondary, lineHeight: 24 },
   tagsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  tag: { paddingHorizontal: 12, paddingVertical: 6, backgroundColor: Colors.primary + '15', borderRadius: 10 },
-  tagText: { fontSize: 13, color: Colors.primary, fontWeight: '600' },
+  tag: { paddingHorizontal: 12, paddingVertical: 6, backgroundColor: Colors.secondary + '15', borderRadius: 10 },
+  tagText: { fontSize: 13, color: Colors.secondary, fontWeight: '600' },
   safetyCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -475,13 +472,33 @@ const styles = StyleSheet.create({
   },
   contactBtn: {
     flex: 1,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  contactBtnGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: Colors.primary,
+    paddingVertical: 16,
+  },
+  contactBtnText: { fontSize: 16, fontWeight: '700', color: '#fff' },
+  markSoldBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    backgroundColor: Colors.success,
     paddingVertical: 16,
     borderRadius: 16,
   },
-  contactBtnText: { fontSize: 16, fontWeight: '700', color: '#fff' },
+  deleteBtn: {
+    width: 52,
+    height: 52,
+    borderRadius: 16,
+    backgroundColor: Colors.error,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

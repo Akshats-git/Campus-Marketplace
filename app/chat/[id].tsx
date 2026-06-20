@@ -111,7 +111,7 @@ export default function ChatScreen() {
       setSending(true);
       try {
         const url = await uploadChatImage(result.assets[0].uri, id);
-        await sendMessage(id, userProfile.uid, userProfile.displayName, firebaseUser?.photoURL ?? null, '📷 Photo', otherId, url);
+        await sendMessage(id, userProfile.uid, userProfile.displayName, firebaseUser?.photoURL ?? null, 'Photo', otherId, url);
       } catch {
         Alert.alert('Error', 'Failed to send image.');
       } finally {
@@ -198,7 +198,6 @@ export default function ChatScreen() {
         }}
       />
 
-      {/* Listing Header */}
       {listing && (
         <Pressable
           style={styles.listingHeader}
@@ -214,7 +213,6 @@ export default function ChatScreen() {
         </Pressable>
       )}
 
-      {/* Messages */}
       <FlatList
         ref={listRef}
         data={messages}
@@ -225,14 +223,15 @@ export default function ChatScreen() {
         onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })}
         ListEmptyComponent={
           <View style={styles.emptyChat}>
-            <MaterialCommunityIcons name="chat-outline" size={48} color={Colors.border} />
+            <View style={styles.emptyChatIcon}>
+              <MaterialCommunityIcons name="chat-outline" size={36} color={Colors.primary} />
+            </View>
             <Text style={styles.emptyChatText}>Start the conversation!</Text>
             <Text style={styles.emptyChatSub}>Ask about condition, price, or negotiation</Text>
           </View>
         }
       />
 
-      {/* Offer panel */}
       {showOffer && (
         <Animated.View entering={FadeInDown} style={styles.offerPanel}>
           <Text style={styles.offerPanelTitle}>Make an Offer</Text>
@@ -263,7 +262,6 @@ export default function ChatScreen() {
         </Animated.View>
       )}
 
-      {/* Input Bar */}
       <View style={[styles.inputBar, { paddingBottom: Math.max(insets.bottom, 8) }]}>
         <Pressable style={styles.actionBtn} onPress={handleImage}>
           <MaterialCommunityIcons name="image-outline" size={24} color={Colors.textSecondary} />
@@ -311,10 +309,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
-  listingThumb: { width: 48, height: 48, borderRadius: 10, backgroundColor: Colors.surfaceVariant },
+  listingThumb: { width: 48, height: 48, borderRadius: 12, backgroundColor: Colors.surfaceVariant },
   listingInfo: { flex: 1, gap: 2 },
   listingTitle: { fontSize: 14, fontWeight: '600', color: Colors.text },
-  listingPrice: { fontSize: 15, fontWeight: '800', color: Colors.primary },
+  listingPrice: { fontSize: 15, fontWeight: '800', color: Colors.primaryDark },
   listingStatus: {
     fontSize: 10,
     fontWeight: '800',
@@ -334,7 +332,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: Colors.primary + '25',
+    backgroundColor: Colors.primary + '18',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -365,6 +363,15 @@ const styles = StyleSheet.create({
   offerBtnText: { fontSize: 13, fontWeight: '700', color: '#fff' },
   offerStatus: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, alignSelf: 'flex-start' },
   emptyChat: { alignItems: 'center', paddingTop: 80, gap: 12 },
+  emptyChatIcon: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: Colors.primary + '10',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
   emptyChatText: { fontSize: 18, fontWeight: '700', color: Colors.text },
   emptyChatSub: { fontSize: 14, color: Colors.textHint, textAlign: 'center' },
   offerPanel: {

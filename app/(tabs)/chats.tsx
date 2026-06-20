@@ -35,7 +35,7 @@ export default function ChatsScreen() {
     return (
       <Animated.View entering={FadeInDown.delay(index * 50)}>
         <Pressable
-          style={styles.chatItem}
+          style={[styles.chatItem, unread > 0 && styles.chatItemUnread]}
           onPress={() => router.push(`/chat/${item.id}`)}
         >
           <View style={styles.imageWrap}>
@@ -53,7 +53,7 @@ export default function ChatsScreen() {
           <View style={styles.chatContent}>
             <View style={styles.chatHeader}>
               <Text style={styles.chatTitle} numberOfLines={1}>{item.listingTitle}</Text>
-              <Text style={styles.chatTime}>{formatRelativeTime(item.lastMessageAt)}</Text>
+              <Text style={[styles.chatTime, unread > 0 && { color: Colors.primary }]}>{formatRelativeTime(item.lastMessageAt)}</Text>
             </View>
             <View style={styles.chatFooter}>
               <Text
@@ -78,8 +78,8 @@ export default function ChatsScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Messages</Text>
-        <Pressable style={styles.composeBtn}>
-          <MaterialCommunityIcons name="pencil-outline" size={22} color={Colors.primary} />
+        <Pressable style={styles.composeBtn} onPress={() => router.push('/(tabs)/search')}>
+          <MaterialCommunityIcons name="magnify" size={22} color={Colors.primary} />
         </Pressable>
       </View>
 
@@ -92,7 +92,9 @@ export default function ChatsScreen() {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <MaterialCommunityIcons name="chat-outline" size={72} color={Colors.border} />
+            <View style={styles.emptyIconWrap}>
+              <MaterialCommunityIcons name="chat-outline" size={48} color={Colors.primary} />
+            </View>
             <Text style={styles.emptyTitle}>No conversations yet</Text>
             <Text style={styles.emptySub}>
               When you contact a seller or someone contacts you, it'll show up here.
@@ -116,12 +118,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: Colors.text },
+  headerTitle: { fontSize: 24, fontWeight: '800', color: Colors.text },
   composeBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.primary + '15',
+    width: 42,
+    height: 42,
+    borderRadius: 14,
+    backgroundColor: Colors.primary + '12',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -133,6 +135,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     backgroundColor: Colors.surface,
+  },
+  chatItemUnread: {
+    backgroundColor: Colors.primary + '06',
   },
   imageWrap: { position: 'relative' },
   listingThumb: { width: 64, height: 64, borderRadius: 16, backgroundColor: Colors.surfaceVariant },
@@ -169,7 +174,16 @@ const styles = StyleSheet.create({
   },
   unreadBadgeText: { fontSize: 11, color: '#fff', fontWeight: '800' },
   separator: { height: 1, backgroundColor: Colors.divider, marginLeft: 94 },
-  empty: { alignItems: 'center', paddingTop: 80, gap: 12, paddingHorizontal: 48 },
+  empty: { alignItems: 'center', paddingTop: 80, gap: 14, paddingHorizontal: 48 },
+  emptyIconWrap: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    backgroundColor: Colors.primary + '10',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
   emptyTitle: { fontSize: 20, fontWeight: '700', color: Colors.text },
   emptySub: { fontSize: 14, color: Colors.textHint, textAlign: 'center', lineHeight: 22 },
 });

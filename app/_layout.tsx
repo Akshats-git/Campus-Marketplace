@@ -23,6 +23,7 @@ const lightTheme = {
     primary: Colors.primary,
     primaryContainer: Colors.primaryLight + '33',
     secondary: Colors.secondary,
+    secondaryContainer: Colors.secondary + '20',
     background: Colors.background,
     surface: Colors.surface,
     surfaceVariant: Colors.surfaceVariant,
@@ -39,6 +40,7 @@ const darkTheme = {
   colors: {
     ...MD3DarkTheme.colors,
     primary: Colors.primaryLight,
+    secondary: Colors.secondary,
     background: Colors.darkBackground,
     surface: Colors.darkSurface,
     surfaceVariant: Colors.darkSurfaceVariant,

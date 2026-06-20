@@ -29,19 +29,19 @@ const BANNER_ITEMS = [
     title: 'Semester Clearance',
     subtitle: 'Great deals from seniors',
     icon: 'tag-multiple',
-    gradient: [Colors.primary, Colors.secondary] as [string, string],
+    gradient: ['#FF6B6B', '#FF8E8E'] as [string, string],
   },
   {
     title: 'Fresher Corner',
     subtitle: 'Everything a fresher needs',
     icon: 'star-shooting',
-    gradient: ['#6A1B9A', '#AB47BC'] as [string, string],
+    gradient: ['#9B59B6', '#C39BD3'] as [string, string],
   },
   {
     title: 'Free & Donate',
     subtitle: 'Pay it forward',
     icon: 'gift-open',
-    gradient: [Colors.success, '#66BB6A'] as [string, string],
+    gradient: ['#00B894', '#55E6C1'] as [string, string],
   },
 ];
 
@@ -81,7 +81,6 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Sticky header on scroll */}
       <RNAnimated.View style={[styles.stickyHeader, { paddingTop: insets.top, opacity: headerOpacity }]}>
         <Text style={styles.stickyTitle}>Campus Marketplace</Text>
       </RNAnimated.View>
@@ -96,20 +95,19 @@ export default function HomeScreen() {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.primary} />}
         onScroll={RNAnimated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
         ListHeaderComponent={
-          <View style={{ gap: 0 }}>
-            {/* Hero header */}
+          <View>
             <LinearGradient
-              colors={[Colors.primaryDark, Colors.primary, '#5C6BC0']}
+              colors={['#E85555', '#FF6B6B', '#FF8E8E']}
               style={[styles.hero, { paddingTop: insets.top + 12 }]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
               <View style={styles.heroContent}>
-                <View>
+                <View style={styles.heroTextWrap}>
                   <Text style={styles.heroGreeting}>
                     Hello, {userProfile?.displayName?.split(' ')[0] ?? 'Student'} 👋
                   </Text>
-                  <Text style={styles.heroTitle}>What are you looking for?</Text>
+                  <Text style={styles.heroTitle}>What are you{'\n'}looking for?</Text>
                 </View>
                 <Pressable style={styles.notifBtn} onPress={() => router.push('/(tabs)/chats')}>
                   <MaterialCommunityIcons name="bell-outline" size={22} color="#fff" />
@@ -125,7 +123,6 @@ export default function HomeScreen() {
               </Pressable>
             </LinearGradient>
 
-            {/* Banners */}
             <View style={styles.bannerSection}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bannerScroll}>
                 {BANNER_ITEMS.map((b, i) => (
@@ -140,7 +137,6 @@ export default function HomeScreen() {
               </ScrollView>
             </View>
 
-            {/* Categories */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Browse by Category</Text>
@@ -166,7 +162,9 @@ export default function HomeScreen() {
                     style={[
                       styles.catChip,
                       selectedCategory === cat.id && styles.catChipActive,
-                      { borderColor: cat.color + '40' },
+                      selectedCategory === cat.id
+                        ? { backgroundColor: cat.color, borderColor: cat.color }
+                        : { borderColor: cat.color + '30' },
                     ]}
                     onPress={() => setCategory(selectedCategory === cat.id ? null : cat.id)}
                   >
@@ -183,7 +181,6 @@ export default function HomeScreen() {
               </ScrollView>
             </View>
 
-            {/* Listings header */}
             <View style={styles.sectionHeader2}>
               <Text style={styles.sectionTitle}>
                 {selectedCategory
@@ -230,15 +227,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stickyTitle: { fontSize: 16, fontWeight: '700', color: '#fff' },
-  hero: { paddingHorizontal: 20, paddingBottom: 32, gap: 16 },
+  hero: { paddingHorizontal: 20, paddingBottom: 36, gap: 20 },
   heroContent: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
-  heroGreeting: { fontSize: 14, color: 'rgba(255,255,255,0.8)', fontWeight: '500' },
-  heroTitle: { fontSize: 22, fontWeight: '800', color: '#fff', marginTop: 2 },
+  heroTextWrap: { flex: 1, gap: 4 },
+  heroGreeting: { fontSize: 14, color: 'rgba(255,255,255,0.85)', fontWeight: '500' },
+  heroTitle: { fontSize: 26, fontWeight: '800', color: '#fff', marginTop: 2, lineHeight: 34 },
   notifBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -250,25 +248,24 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
-    marginTop: 4,
-    ...Shadows.small,
+    ...Shadows.medium,
   },
   searchPlaceholder: { flex: 1, fontSize: 15, color: Colors.textHint },
   searchFilter: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    backgroundColor: Colors.primary + '15',
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: Colors.primary + '12',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  bannerSection: { marginTop: -16 },
-  bannerScroll: { paddingHorizontal: 20, paddingVertical: 8, gap: 12 },
+  bannerSection: { marginTop: -18 },
+  bannerScroll: { paddingHorizontal: 20, paddingTop: 4, paddingBottom: 8, gap: 12 },
   bannerCard: { width: 180, borderRadius: 20, overflow: 'hidden', ...Shadows.medium },
   bannerGradient: { padding: 20, gap: 6, height: 120, justifyContent: 'flex-end' },
   bannerTitle: { fontSize: 15, fontWeight: '800', color: '#fff' },
-  bannerSub: { fontSize: 11, color: 'rgba(255,255,255,0.8)', fontWeight: '500' },
-  section: { paddingTop: 20, gap: 12 },
+  bannerSub: { fontSize: 11, color: 'rgba(255,255,255,0.85)', fontWeight: '500' },
+  section: { paddingTop: 24, gap: 14 },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -280,8 +277,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 12,
+    paddingTop: 28,
+    paddingBottom: 14,
   },
   sectionTitle: { fontSize: 18, fontWeight: '800', color: Colors.text },
   seeAll: { fontSize: 13, color: Colors.primary, fontWeight: '600' },

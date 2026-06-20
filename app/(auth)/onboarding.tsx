@@ -40,7 +40,7 @@ export default function OnboardingScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[Colors.primaryDark, Colors.primary]}
+        colors={['#E85555', '#FF6B6B']}
         style={styles.header}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -154,7 +154,7 @@ export default function OnboardingScreen() {
           {saving ? (
             <ActivityIndicator size={20} color="#fff" />
           ) : (
-            <Text style={styles.nextBtnText}>{step < 2 ? 'Next →' : 'Get Started'}</Text>
+            <Text style={styles.nextBtnText}>{step < 2 ? 'Next' : 'Get Started'}</Text>
           )}
         </Pressable>
       </View>
@@ -165,9 +165,9 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },
   header: { paddingTop: 60, paddingBottom: 32, paddingHorizontal: 24, gap: 8 },
-  headerTag: { fontSize: 12, color: 'rgba(255,255,255,0.7)', fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase' },
+  headerTag: { fontSize: 12, color: 'rgba(255,255,255,0.75)', fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase' },
   headerTitle: { fontSize: 26, fontWeight: '800', color: '#fff' },
-  headerSub: { fontSize: 14, color: 'rgba(255,255,255,0.75)' },
+  headerSub: { fontSize: 14, color: 'rgba(255,255,255,0.8)' },
   stepsRow: { flexDirection: 'row', gap: 8, marginTop: 16 },
   stepDot: { width: 32, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.3)' },
   stepDotActive: { backgroundColor: '#fff', width: 48 },
