@@ -7,11 +7,13 @@ import {
   TextInput,
   Keyboard,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { searchListings } from '../../src/services/listings';
 import { ListingCard } from '../../src/components/listing/ListingCard';
 import { Colors } from '../../src/constants/colors';
@@ -19,7 +21,8 @@ import { CATEGORIES, CONDITIONS } from '../../src/constants/categories';
 import { Listing } from '../../src/types';
 import { SEARCH_DEBOUNCE_MS } from '../../src/constants/config';
 
-const RECENT_SEARCHES = ['calculator', 'cycle', 'textbook', 'mattress', 'table fan'];
+const RECENT_SEARCHES_KEY = 'recent_searches';
+const MAX_RECENT = 8;
 
 export default function SearchScreen() {
   const insets = useSafeAreaInsets();
@@ -31,10 +34,27 @@ export default function SearchScreen() {
   const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   useEffect(() => {
     inputRef.current?.focus();
+    AsyncStorage.getItem(RECENT_SEARCHES_KEY).then(data => {
+      if (data) setRecentSearches(JSON.parse(data));
+    });
   }, []);
+
+  async function saveSearch(term: string) {
+    const trimmed = term.trim().toLowerCase();
+    if (!trimmed) return;
+    const updated = [trimmed, ...recentSearches.filter(s => s !== trimmed)].slice(0, MAX_RECENT);
+    setRecentSearches(updated);
+    await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+  }
+
+  async function clearRecentSearches() {
+    setRecentSearches([]);
+    await AsyncStorage.removeItem(RECENT_SEARCHES_KEY);
+  }
 
   useEffect(() => {
     if (!query.trim()) {
@@ -50,6 +70,7 @@ export default function SearchScreen() {
         if (selectedCategory) data = data.filter(l => l.categoryId === selectedCategory);
         if (selectedCondition) data = data.filter(l => l.condition === selectedCondition);
         setResults(data);
+        saveSearch(query);
       } finally {
         setLoading(false);
       }
@@ -151,16 +172,25 @@ export default function SearchScreen() {
       {/* Content */}
       {!hasSearched ? (
         <View style={styles.emptyState}>
-          <Text style={styles.recentTitle}>Recent Searches</Text>
-          <View style={styles.recentList}>
-            {RECENT_SEARCHES.map(s => (
-              <Pressable key={s} style={styles.recentItem} onPress={() => setQuery(s)}>
-                <MaterialCommunityIcons name="history" size={16} color={Colors.textHint} />
-                <Text style={styles.recentText}>{s}</Text>
-                <MaterialCommunityIcons name="arrow-top-left" size={14} color={Colors.textHint} />
-              </Pressable>
-            ))}
-          </View>
+          {recentSearches.length > 0 && (
+            <>
+              <View style={styles.recentHeader}>
+                <Text style={styles.recentTitle}>Recent Searches</Text>
+                <Pressable onPress={clearRecentSearches}>
+                  <Text style={styles.clearText}>Clear all</Text>
+                </Pressable>
+              </View>
+              <View style={styles.recentList}>
+                {recentSearches.map(s => (
+                  <Pressable key={s} style={styles.recentItem} onPress={() => setQuery(s)}>
+                    <MaterialCommunityIcons name="history" size={16} color={Colors.textHint} />
+                    <Text style={styles.recentText}>{s}</Text>
+                    <MaterialCommunityIcons name="arrow-top-left" size={14} color={Colors.textHint} />
+                  </Pressable>
+                ))}
+              </View>
+            </>
+          )}
 
           <Text style={[styles.recentTitle, { marginTop: 24 }]}>Browse Categories</Text>
           <View style={styles.catGrid}>
@@ -291,7 +321,9 @@ const styles = StyleSheet.create({
   clearBtn: { alignSelf: 'flex-start', paddingVertical: 6 },
   clearBtnText: { fontSize: 13, color: Colors.error, fontWeight: '600' },
   emptyState: { flex: 1, padding: 20 },
-  recentTitle: { fontSize: 14, fontWeight: '700', color: Colors.textSecondary, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.6 },
+  recentHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  recentTitle: { fontSize: 14, fontWeight: '700', color: Colors.textSecondary, textTransform: 'uppercase', letterSpacing: 0.6 },
+  clearText: { fontSize: 13, color: Colors.error, fontWeight: '600' },
   recentList: { gap: 2 },
   recentItem: {
     flexDirection: 'row',
@@ -302,9 +334,9 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.divider,
   },
   recentText: { flex: 1, fontSize: 15, color: Colors.text },
-  catGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  catGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'space-between' },
   catCard: {
-    width: '47%',
+    width: (Dimensions.get('window').width - 50) / 2,
     padding: 16,
     borderRadius: 16,
     gap: 8,

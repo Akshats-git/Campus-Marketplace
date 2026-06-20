@@ -1,4 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
+// @ts-ignore — getReactNativePersistence exists at runtime but isn't in the default type export
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics, isSupported } from 'firebase/analytics';
